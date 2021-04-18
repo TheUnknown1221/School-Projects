@@ -2,6 +2,7 @@
 import time as t
 import random
 
+#card amount
 C_amount = 30
 half = C_amount / 2 
 
@@ -9,8 +10,7 @@ red = random.randint(1, half)
 green = random.randint(1, half)
 blue = 30 - (red + green)
 total = red+green+blue
-usr1 = "no"
-usr2 = "yes"
+
 
 print("only letters")
 usr1 = input("User1:")
@@ -133,6 +133,3 @@ with open("CardScores.txt", "a") as f:
 	f.write("{} won wit {} points\n".format(winning_usr, winning_usr_score))
 
 f.close()
-
-
-
