@@ -27,6 +27,8 @@ usr2_score = 0
 
 winning_usr = 0
 winning_usr_score = 0
+The_rounds = 1
+global The_rounds
 
 
 
@@ -37,6 +39,8 @@ def RandomCard():
 	global total
 	global num
 	global card
+	 
+	
 
 	num = random.randint(1, 3)
 	if num==1:
@@ -63,7 +67,7 @@ def RandomCard():
 
 	total = red+green+blue
 
-while total >=1:
+while total >=1: 
 	RandomCard()
 	usr1_currentNum = num
 	usr1_score_ofCard = random.randint(1, 10)
@@ -74,7 +78,7 @@ while total >=1:
 	RandomCard()
 	usr2_currentNum = num
 	usr2_score_ofCard = random.randint(1, 10)
-	print("{} picked up {} card worth {} points".format(usr2, card, usr2_score_ofCard))
+	print("{} picked up {} card worth {} points\n".format(usr2, card, usr2_score_ofCard))
 	t.sleep(0.5)
 	
 	
@@ -85,7 +89,7 @@ while total >=1:
 		if usr2_score_ofCard ==usr1_score_ofCard:
 			print("DRAW no points")
 
-		if usr1_score_ofCard >= usr2_score_ofCard:
+		elif usr1_score_ofCard >= usr2_score_ofCard:
 			print("{} has more points".format(usr1))
 			usr1_score += usr1_score_ofCard
 
@@ -96,12 +100,15 @@ while total >=1:
 	else:
 		usr1_score += usr1_score_ofCard
 		usr2_score += usr2_score_ofCard
+		print("round: {}".format(The_rounds))
 		print("\n{} total score is {}".format(usr1, usr1_score))
 		print("{} total score is {}".format(usr2, usr2_score))
 
 
 
+
 	input("\npress [enter] for the next round\n")
+	The_rounds += 1
 
 
 print("\n\nthere are no more cards")
