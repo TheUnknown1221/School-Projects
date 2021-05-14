@@ -1,0 +1,48 @@
+import math
+
+if input("add students? [y/n]").lower().strip()=="y":
+    names = []
+    while True:
+        new_name = input("names: ")
+        if new_name=="exit": break
+        else:
+            names.append(new_name.strip())
+
+else:
+    names = ["bob", "jack", "mark", "brown", "kali", "what"]
+list_absent = []
+liat_present = []
+name_absent = 0
+name_present = 0
+per_add = (100 / len(names))
+per_add = math.trunc(per_add)
+
+print(names)
+
+for student in names:
+    print(student)
+    if input("is student here [y/n]").lower()=="y":
+        liat_present.append(student)
+        name_present += per_add
+    else:
+        list_absent.append(student)
+        name_absent += per_add
+
+
+while True:
+    if name_absent + name_present >=100:
+        break
+    if name_absent + name_present <100:
+        if name_absent<=name_absent:
+            name_absent += 1
+        else:
+            name_absent += 1
+
+for i in liat_present:
+    print(f"student: {i}\n")
+print(f"present %{name_present}")
+for i in list_absent:
+    print(f"student: {i}")
+print(f"present %{name_absent}\n")
+
+input()
