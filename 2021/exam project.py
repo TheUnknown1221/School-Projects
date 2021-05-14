@@ -1,3 +1,9 @@
+"""
+this allows the user to input students
+then it calculates the percentage then they can input if the student is presnet
+and at the end it shows the list of present studens at the end of the program with the percentage
+"""
+
 import math
 
 if input("add students? [y/n]").lower().strip()=="y":
