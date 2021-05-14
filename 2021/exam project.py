@@ -3,7 +3,6 @@ this allows the user to input students
 then it calculates the percentage then they can input if the student is presnet
 and at the end it shows the list of present studens at the end of the program with the percentage
 """
-
 import math
 
 if input("add students? [y/n]").lower().strip()=="y":
@@ -26,13 +25,16 @@ per_add = math.trunc(per_add)
 print(names)
 
 for student in names:
-    print(student)
-    if input("is student here [y/n]").lower()=="y":
-        liat_present.append(student)
-        name_present += per_add
+    if len(student)<=0:
+        continue
     else:
-        list_absent.append(student)
-        name_absent += per_add
+        print(student)
+        if input("is student here [y/n]").lower()=="y":
+            liat_present.append(student)
+            name_present += per_add
+        else:
+            list_absent.append(student)
+            name_absent += per_add
 
 
 while True:
@@ -45,10 +47,12 @@ while True:
             name_absent += 1
 
 for i in liat_present:
-    print(f"student: {i}\n")
-print(f"present %{name_present}")
+    print(f"student: {i}")
+print(f"present %{name_present}\ny")
 for i in list_absent:
     print(f"student: {i}")
 print(f"present %{name_absent}\n")
 
-input()
+while True:
+    if input()=="y":
+        break
