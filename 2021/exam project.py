@@ -29,7 +29,7 @@ for student in names:
         continue
     else:
         print(student)
-        if input("is student here [y/n]").lower()=="y":
+        if input(f"is {student} here [y/n]").lower()=="y":
             liat_present.append(student)
             name_present += per_add
         else:
