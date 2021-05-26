@@ -1,7 +1,8 @@
 import time
 import random
-import threading
+import numpy
 
+# where the file for the birds is loaded
 
 def openlist():
     listofbirds = []
@@ -14,38 +15,67 @@ def openlist():
 
     f.close()
 
+
+
 class person:
     def __init__(self, name, listofbirds):
-        self.name = name
+        self.name = name.strip()
+        
+        # checks if the name is under 2 if so then gives a testing name
+        if len(self.name) <= 2:
+            self.name = "jackson"
+
         self.money = 0
+        # self.menupicker()
+        self.birds()
+        listofNEWbirds = self.birds()
+        print(listofNEWbirds)
 
-    def on_hand(self):
-        print(f"you have ${self.money} in cash")
-    # where money is kept
 
-    def hunting(self):
-        pass
-    # hunt animals
 
-    def shop(self, money):
-        pass
-
-    def testing(self):
-        """
-        this is to test if the list is loaded and if the values
-        are working correctly before continuing with the program
-        :return:
-        """
-        for item in listofbirds:
+    def birds(self):
+        # print(int(numpy.round(temp_worth / 2.5)))
+        listofNEWbirds = []
+        for items in listofbirds:
+            items = items.strip()
             temp_wight = random.randint(4, 16)
             temp_worth = temp_wight * 2.5
             temp_worth = int(temp_worth)
-            print(f"bird: {item} \nworth: ${temp_worth} wight: {temp_wight}")
-        print(f"this was called by {self.name}\nmoney: {self.money}")
-    # where the buying and selling takes place
+            temp_list = [items, temp_worth]
+            listofNEWbirds.append(temp_list)
+        return listofNEWbirds
+    
+
+
+    """
+    This is where the user functions begin
+    """
+
+    def on_hand(self):
+        # where money is kept
+        print(f"you have ${self.money} in cash")
+
+    def hunting(self):
+        # hunt animals
+        pass
+
+    def shop_sellandbuy(self):
+        # where the buying and selling takes place
+        pass
+
+    def menupicker(self):
+
+        while True:
+            temp_user = str(input("terminal: "))
+
+            if len(temp_user) <= 2:
+                print("sorry could not find what your looking for")
+            
+            else:
+                print(f"sorry {self.name}, I could not find ({temp_user.strip()}) anywhere")
 
 
 if __name__ == "__main__":
     listofbirds = openlist()
     user = person(str(input("user: ")), listofbirds)
-    user.testing()
+
