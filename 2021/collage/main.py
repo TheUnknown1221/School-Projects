@@ -31,6 +31,8 @@ class person:
         self.menupicker()
 
         # temp varables
+
+        # later to be modifid for interchange able weapons
         self.weapondamage = 10 
 
 
@@ -53,7 +55,7 @@ class person:
     def randombird(self):
         temp = random.choice(self.listofNEWbirds)
          # random ==== [name, wight, cost]
-        randombird = [temp[0], int(numpy.round(temp[1] / 2.5)), temp[1]]
+        randombird = [temp[0], temp[1], int(numpy.round(temp[1] / 2.5))]
         return randombird
     
 
@@ -64,6 +66,10 @@ class person:
     def on_hand(self):
         # where money is kept
         print(f"you have ${self.money} in cash")
+
+    def inventory(self):
+        # where the animals you hubt will be stored
+        pass
 
     def hunting(self):
         # hunt animals
@@ -98,5 +104,4 @@ class person:
 if __name__ == "__main__":
     listofbirds = openlist()
     user = person(str(input("user: ")), listofbirds)
-
 
