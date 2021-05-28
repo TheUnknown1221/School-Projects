@@ -159,3 +159,4 @@ class person:
 if __name__ == "__main__":
     listofbirds = openlist()
     user = person(str(input("user: ")), listofbirds)
+    
