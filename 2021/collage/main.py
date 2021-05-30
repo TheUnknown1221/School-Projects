@@ -1,14 +1,10 @@
 # moduels that i have installed (using pip duh not built in)
-from threading import Thread
-
-
 listmodule = ["numpy"]
 try:
     from colorama import Fore, Back, Style
     import time
     import random
     import numpy
-    import threading
 except ModuleNotFoundError:
     try:
         print(f"{Fore.RED}please make sure you have these modules installed:{Fore.RESET} ")
