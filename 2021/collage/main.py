@@ -37,12 +37,16 @@ def openlist():
 class person:
     def __init__(self, name, listofbirds):
         self.name = name.strip()
-
-        # checks if the name is under 2 if so then gives a testing name
         if len(self.name) <= 2:
             self.name = "jackson"
+
+        # checks if the name is under 2 if so then gives a testing name
         self.money = 0
         self.inventory = []
+        # format = [["name, %to hit the target"]]
+        self.shopinv = [["shootie muc gun", 32], ["hunting rifle", 23], ["lucky panda shooter", 45], ["ray gun", 78]]
+        # the current weapon of the player/user
+        self.currentweapon = ["toy gun", 10]
 
         # later to be modifid for interchange able weapons
         self.weapondamage = 10
@@ -79,7 +83,11 @@ class person:
 
     def on_hand(self):
         # where money is kept
-        print(f"you have ${self.money} in cash")
+        if self.money<=0:
+            col_ary = Fore.RED
+        else:
+            col_ary = Fore.GREEN
+        print(f"you have {col_ary}${self.money}{Fore.RESET} in cash")
         if len(self.inventory) != 0:
             for item in self.inventory[:]:
                 print(f"\nbird: {Fore.GREEN}{item[0]}{Fore.RESET}")
@@ -93,19 +101,20 @@ class person:
 
     def hunting(self):
         if random.randint(1, 100) != 100:
-            responses = ["grab the gun",
-                         "fall out fo your chair while grabbing the gun",
-                         "you quietly grab the gun",
-                         "you knocked off all your snaks grabbing the gun"
+            if self.currentweapon[1]>=40:
+                if self.currentweapon[1] <=49:
+                    col_ary = Fore.YELLOW
+                else:
+                    col_ary = Fore.GREEN
+            else:
+                col_ary = Fore.RED
+            responses = [f"grab the {self.currentweapon[0]} with an Accuracy of {col_ary}%{self.currentweapon[1]}",
+                         f"fall out fo your chair while grabbing the {self.currentweapon[0]} with an Accuracy of {col_ary}%{self.currentweapon[1]}",
+                         f"you quietly grab the {self.currentweapon[0]} with an Accuracy of {col_ary}%{self.currentweapon[1]}",
+                         f"you knocked off all your snaks grabbing the {self.currentweapon[0]} with an Accuracy of {col_ary}%{self.currentweapon[1]}"
                          ]
 
-            print(f"you spot a bird and {random.choice(responses)}\n")
-            """
-            the shot you take
-            if you can fit it in your inventory
-            random generated bird
-            how many details you can identify before taking the shot
-            """
+            print(f"you spot a bird and {random.choice(responses)}{Fore.RESET}\n")
             randombird = self.randombird()
             name_ientify = f"{Fore.GREEN}{randombird[0]}{Fore.RESET}"
             weight_identify = randombird[2]
@@ -122,15 +131,19 @@ class person:
             print(f"name: {name_ientify}, \nweight: {weight_identify}")
             time.sleep(1)
             if input("you've scoped in, do you take the shot?\n[y/n] ").strip().lower() == "y":
-                print("\nyou take the shot and it falls on the ground, you walk up to it")
-                if weight_identify==f"{Fore.RED}Cant identify{Fore.RESET}" or name_ientify ==f"{Fore.RED}Cant identify{Fore.RESET}":
-                    print("you can finnaly see all the details of the bird:")
-                    print(f"\nname: {Fore.GREEN}{randombird[0]}{Fore.RESET}, \nweight: {Fore.GREEN}{randombird[2]}lb{Fore.RESET}\n\nyou now pick up the {Fore.GREEN}{randombird[0]}{Fore.RESET} and put it in your backpack")
-                    self.inventory.append(randombird)
+                if range(0, self.currentweapon[1])==0 or range(0, self.currentweapon[1])==self.currentweapon[1]:
+                    print(f"you shot your {self.currentweapon[0]} and missed should have gotten a better gun")
+                    print(f"{Fore.BLUE}// you can buy new weapon in the shop{Fore.RESET}")
                 else:
-                        print(f"you grab the {Fore.GREEN}{randombird[0]}{Fore.RESET} and put it in your backpack ")
+                    print("\nyou take the shot and it falls on the ground, you walk up to it")
+                    if weight_identify==f"{Fore.RED}Cant identify{Fore.RESET}" or name_ientify ==f"{Fore.RED}Cant identify{Fore.RESET}":
+                        print("you can finnaly see all the details of the bird:")
+                        print(f"\nname: {Fore.GREEN}{randombird[0]}{Fore.RESET}, \nweight: {Fore.GREEN}{randombird[2]}lb{Fore.RESET}\n\nyou now pick up the {Fore.GREEN}{randombird[0]}{Fore.RESET} and put it in your backpack")
                         self.inventory.append(randombird)
-                        time.sleep(1)
+                    else:
+                            print(f"you grab the {Fore.GREEN}{randombird[0]}{Fore.RESET} and put it in your backpack ")
+                            self.inventory.append(randombird)
+                            time.sleep(1)
             else:
                 print("you put the gun back down")
                 if name_ientify != "Cant identify":
@@ -142,7 +155,26 @@ class person:
 
 
     def buy(self):
-        pass
+        # new weaons will increaes your chance to hit the shot and will display name of wepon on pick up line //96-100
+        while True:
+            if self.money<=0:
+                print(f"you have {Fore.RED}${self.money}{Fore.RESET} you cannot buy anything")
+                time.sleep(0.5)
+                break
+            else:
+                try:
+                    for weapon in self.shopinv:
+                        if weapon[1]>=40:
+                            if weapon[1] <=49:
+                                col_ary = Fore.YELLOW
+                            else:
+                                col_ary = Fore.GREEN
+                        else:
+                            col_ary = Fore.RED
+                        print(f"\nWeapon: {weapon[0]}\nAccuracy: {col_ary}%{weapon[1]}{Fore.RESET}")
+                    break
+                except:
+                    pass
 
 
 
@@ -154,7 +186,7 @@ class person:
             time.sleep(0.8)
             birdnum = 1
             for bird in self.inventory:
-                print(f"\nBird: {birdnum}\n\nitem: {bird[0]}\nweight: {bird[1]}lb\nprice: ${bird[2]}")
+                print(f"\nBird: {birdnum}\n\nitem: {Fore.GREEN}{bird[0]}{Fore.RESET}\nweight: {Fore.GREEN}{bird[1]}lb{Fore.RESET}\nprice: {Fore.GREEN}${bird[2]}{Fore.RESET}")
                 birdnum += 1
             while True:
                 temp_user = (input(f"\npick the bird(by number) that you would like to sell\n{Fore.BLUE}//type exit to stop selling{Fore.RESET}\nBird: "))
@@ -171,7 +203,9 @@ class person:
                         print(f"\nBird {birdnum}\n\nitem: {Fore.GREEN}{bird[0]}{Fore.RESET}\nweight: {Fore.GREEN}{bird[1]}lb{Fore.RESET}\nprice: {Fore.GREEN}${bird[2]}{Fore.RESET}")
                         birdnum += 1
                 except ValueError:
-                    print(f"{Fore.RED}{str(ValueError)} is not a number{Fore.RESET}")
+                    print(f"{Fore.RED}{temp_user} is not a number{Fore.RESET}")
+                except IndexError:
+                    print(f"{Fore.RED}{temp_user} is not in the index please re-try{Fore.RESET}")
                     
 
 
@@ -185,7 +219,7 @@ class person:
             else:
                 print(f"{Fore.RED}pick {Fore.RED}buy{Fore.RESET} or {Fore.GREEN}sell{Fore.RESET} ({temp_user}) is not an option{Fore.RESET}")
         if temp_user=="buy":
-            pass
+            self.buy()
         else:
             self.sell()
 
@@ -224,7 +258,6 @@ class person:
             elif temp_user=="help :)":
                 print("did you really just try that")
 
-
             else:
                 print(f"{Fore.RED}sorry {self.name}, I could not find ({temp_user.strip()}) anywhere{Fore.RESET}")
 
@@ -232,5 +265,4 @@ class person:
 if __name__ == "__main__":
     listofbirds = openlist()
     user = person(str(input("user: ")), listofbirds)
-    
     
