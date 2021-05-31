@@ -1,4 +1,12 @@
 # moduels that i have installed (using pip duh not built in)
+
+
+
+from random import randint, weibullvariate
+
+import colorama
+
+
 listmodule = ["numpy"]
 try:
     from colorama import Fore, Back, Style
@@ -40,7 +48,7 @@ class person:
             self.name = "jackson"
 
         # checks if the name is under 2 if so then gives a testing name
-        self.money = 0
+        self.money = 100
         self.inventory = []
         # format = [["name, %to hit the target"]]
         self.shopinv = [["shootie muc gun", 32], ["hunting rifle", 23], ["lucky panda shooter", 45], ["ray gun", 78]]
@@ -78,33 +86,33 @@ class person:
         return randombird
     
         
+    def newday_repeat(self):
+        print(f"you slept with your {self.currentweapon[0]} by your side on-to a new day")
+        self.countday += 1
+        self.cooldown =- 1
+        self.colldownsleep = 0
+        self.huntingcooldown = 0
+        self.num_ofbirds = random.randint(3, 5)
+
+        if self.money <= 0:
+            print(f"you have {Fore.RED}${self.money} {Fore.RESET}which is not enough to pay for your hunting licence")
+            time.sleep(1)
+            exit()
+        fees = int(self.money/3)
+        fees = fees+random.randint(0, int(self.money * 0.9))
+        self.money -= fees
+        print(f"{Fore.GREEN}${fees} {Fore.RESET}has been removed form your account to pay for your licence")
+        print(f"New Balance: {Fore.GREEN}${self.money}{Fore.RESET}")
+
+        
 
     def newday(self):
         if len(self.inventory)>=10 and self.cooldown>0:
-            print(f"you slept with your {self.currentweapon[0]} next to you ready for the new day")
-            self.countday += 1
-            self.cooldown =- 1
-            self.colldownsleep = 0
-
-        elif self.colldownsleep<=10:
+            self.newday_repeat()
+        elif self.colldownsleep<=7:
             print("sorry you cannot sleep right now")
         else:
-            print(f"you slept with your {self.currentweapon[0]} by your side on-to a new day")
-            self.countday += 1
-            self.cooldown =- 1
-            self.colldownsleep = 0
-            self.huntingcooldown = 0
-            self.num_ofbirds = random.randint(3, 5)
-
-            if self.money <= 0:
-                print(f"you have {Fore.RED}${self.money} {Fore.RESET}which is not enough to pay for your hunting licence")
-                time.sleep(1)
-                exit()
-            fees = int(self.money/3)
-            fees = fees+random.randint(0, self.money)
-            self.money -= fees
-            print(f"{Fore.GREEN}${fees} {Fore.RESET}has been removed form your account to pay for your licence")
-            print(f"New Balance: {Fore.GREEN}${self.money}{Fore.RESET}")
+            self.newday_repeat()
             
     
     """
@@ -118,8 +126,16 @@ class person:
         else:
             col_ary = Fore.GREEN
         print(f"you have {col_ary}${self.money}{Fore.RESET} in cash")
+        if self.currentweapon[1]>=40:
+                if self.currentweapon[1] <=49:
+                    col_ary = Fore.YELLOW
+                else:
+                    col_ary = Fore.GREEN
+        else:
+            col_ary = Fore.RED
+            print(f"\nweapon name: {self.currentweapon[0]}\nAccuracy: {col_ary}%{self.currentweapon[1]}{Fore.RESET}\n")
         if len(self.inventory) != 0:
-            for item in self.inventory[:]:
+            for item in self.inventory:
                 print(f"\nbird: {Fore.GREEN}{item[0]}{Fore.RESET}")
                 print(f"weight: {Fore.GREEN}{item[2]}lb{Fore.RESET}")
                 if len(self.inventory)>=10:
@@ -189,26 +205,50 @@ class person:
 
 
     def buy(self):
+        temp_list = []
         # new weaons will increaes your chance to hit the shot and will display name of wepon on pick up line //96-100
-        while True:
-            if self.money<=0:
-                print(f"you have {Fore.RED}${self.money}{Fore.RESET} you cannot buy anything")
-                time.sleep(0.5)
-                break
-            else:
-                try:
-                    for weapon in self.shopinv:
-                        if weapon[1]>=40:
-                            if weapon[1] <=49:
-                                col_ary = Fore.YELLOW
+        if self.money<=0:
+            print(f"you have {Fore.RED}${self.money}{Fore.RESET} you cannot buy anything")
+            time.sleep(0.5)
+                
+        else:
+            for weapon in self.shopinv:
+                if weapon[1]>=40:
+                    if weapon[1] <=49:
+                        col_ary = Fore.YELLOW
+                    else:
+                        col_ary = Fore.GREEN
+                else:
+                    col_ary = Fore.RED
+                temp_num = random.randint(weapon[1], int(weapon[1] * 3))
+                temp_list.append(temp_num)
+                print(f"\nWeapon: {weapon[0]}\nAccuracy: {col_ary}%{weapon[1]}{Fore.RESET}\nCost: {Fore.GREEN}${temp_num}{Fore.RESET}")
+            while True:
+                temp_num = input(f"pick your weapon {Fore.BLUE}//by name //type exit to quit{Fore.RESET} \n")
+                if temp_num =="exit": break
+                temp_num2 = 0
+                for weapon in self.shopinv:
+                    if temp_num == weapon[0]:
+                        if self.money >= temp_list[temp_num2]:
+                            if weapon[1]>=40:
+                                if weapon[1] <=49:
+                                    col_ary = Fore.YELLOW
+                                else:
+                                    col_ary = Fore.GREEN
                             else:
-                                col_ary = Fore.GREEN
-                        else:
-                            col_ary = Fore.RED
-                        print(f"\nWeapon: {weapon[0]}\nAccuracy: {col_ary}%{weapon[1]}{Fore.RESET}")
-                    break
-                except:
-                    pass
+                                col_ary = Fore.RED
+                            self.currentweapon = weapon
+                            self.shopinv.pop(temp_num2)
+                            print(f"you bought the {weapon[0]} for {Fore.GREEN}${temp_list[temp_num2]}{Fore.RESET} with an accuracy of {col_ary}%{weapon[1]}{Fore.RESET}")
+                            self.money -= temp_list[temp_num2]
+                            print(f"New balance {Fore.GREEN}${self.money}{Fore.RESET}")
+                            self.menupicker()
+                    else:
+                        pass
+                    temp_num2 += 1
+                
+                
+
 
 
 
@@ -216,41 +256,51 @@ class person:
         if len(self.inventory)<=0:
             print(f"{Fore.RED}you have no birds to sell{Fore.RESET}")
         else:
-            print("which bird would you like to sell?")
-            time.sleep(0.8)
-            birdnum = 1
-            for bird in self.inventory:
-                print(f"\nBird: {birdnum}\n\nitem: {Fore.GREEN}{bird[0]}{Fore.RESET}\nweight: {Fore.GREEN}{bird[1]}lb{Fore.RESET}\nprice: {Fore.GREEN}${bird[2]}{Fore.RESET}")
-                birdnum += 1
-            while True:
-                if self.cooldown > 3:
-                    print(f"{Fore.RED}sorry you connot sell any more birds today{Fore.RESET}")
-                    break
-                else:
-                    temp_user = (input(f"\npick the bird(by number) that you would like to sell\n{Fore.BLUE}//type exit to stop selling{Fore.RESET}\nBird: "))
-                    try:
-                        temp_user = int(temp_user)
-                        self.money += self.inventory[temp_user-1][2]
-                        print(f"{Fore.GREEN}{self.inventory[temp_user-1][0]}{Fore.RESET} has been sold for {Fore.GREEN}${self.inventory[temp_user-1][2]}{Fore.RESET}\n")
-                        self.inventory.remove(self.inventory[temp_user-1])
-                        self.cooldown += 1
-                        if len(self.inventory)<=0:
-                            print(f"{Fore.RED}you have no-more birds to sell\n{Fore.BLUE}//go hunting to get more birds{Fore.RESET}")
-                            break
-                        birdnum = 1
-                        for bird in self.inventory:
-                            print(f"\nBird {birdnum}\n\nitem: {Fore.GREEN}{bird[0]}{Fore.RESET}\nweight: {Fore.GREEN}{bird[1]}lb{Fore.RESET}\nprice: {Fore.GREEN}${bird[2]}{Fore.RESET}")
-                            birdnum += 1
-                    except ValueError:
-                        print(f"{Fore.RED}{temp_user} is not a number{Fore.RESET}")
-                    except IndexError:
-                        print(f"{Fore.RED}{temp_user} is not in the index please re-try{Fore.RESET}")
+            if self.cooldown>=1:
+                    print(f"you connot sell anymore birds please wait for {self.countday} days to sell more birds")
+                    if self.cooldown > 3:
+                        self.cooldown = 3
+            else:
+                print("which bird would you like to sell?")
+                time.sleep(0.8)
+                birdnum = 1
+                for bird in self.inventory:
+                    print(f"\nBird: {birdnum}\n\nitem: {Fore.GREEN}{bird[0]}{Fore.RESET}\nweight: {Fore.GREEN}{bird[1]}lb{Fore.RESET}\nprice: {Fore.GREEN}${bird[2]}{Fore.RESET}")
+                    birdnum += 1
+                while True:
+                    if self.cooldown > 3:
+                        print(f"{Fore.RED}sorry you connot sell any more birds today{Fore.RESET}")
+                        break
+                    else:
+                        temp_user = (input(f"\npick the bird(by number) that you would like to sell\n{Fore.BLUE}//type exit to stop selling{Fore.RESET}\nBird: "))
+                        try:
+                            temp_user = int(temp_user)
+                            self.money += self.inventory[temp_user-1][2]
+                            print(f"{Fore.GREEN}{self.inventory[temp_user-1][0]}{Fore.RESET} has been sold for {Fore.GREEN}${self.inventory[temp_user-1][2]}{Fore.RESET}\n")
+                            self.inventory.remove(self.inventory[temp_user-1])
+                            self.cooldown += 1
+                            if len(self.inventory)<=0:
+                                print(f"{Fore.RED}you have no-more birds to sell\n{Fore.BLUE}//go hunting to get more birds{Fore.RESET}")
+                                break
+                            birdnum = 1
+                            for bird in self.inventory:
+                                print(f"\nBird {birdnum}\n\nitem: {Fore.GREEN}{bird[0]}{Fore.RESET}\nweight: {Fore.GREEN}{bird[1]}lb{Fore.RESET}\nprice: {Fore.GREEN}${bird[2]}{Fore.RESET}")
+                                birdnum += 1
+                        except ValueError:
+                            print(f"{Fore.RED}{temp_user} is not a number{Fore.RESET}")
+                        except IndexError:
+                            print(f"{Fore.RED}{temp_user} is not in the index please re-try{Fore.RESET}")
                     
 
 
     def shop_sellandbuy(self):
         # where the buying and selling takes place
-        print(f"you have {Fore.GREEN}${self.money}{Fore.RESET} in cash\nwould you like to {Fore.RED}buy{Fore.RESET} or {Fore.GREEN}sell{Fore.RESET}?")
+        if self.money<=0:
+            col_ary = Fore.RED
+        else:
+            col_ary = Fore.GREEN
+        print(f"you have {col_ary}${self.money}{Fore.RESET} in cash")
+        print(f"would you like to {Fore.RED}buy{Fore.RESET} or {Fore.GREEN}sell{Fore.RESET}?")
         while True:
             temp_user = input(f"{Fore.GREEN}sell{Fore.RESET}/{Fore.RED}buy{Fore.RESET} ").lower().strip()
             if temp_user=="buy" or temp_user=="sell":
@@ -296,13 +346,7 @@ class person:
                 self.on_hand()
 
             elif temp_user=="shop":
-                if self.cooldown>=1:
-                    print(f"you connot sell anymore birds please wait for {self.countday} days to sell more birds")
-                    if self.cooldown > 3:
-                        self.cooldown = 3
-
-                else:
-                    self.shop_sellandbuy()
+                self.shop_sellandbuy()
 
             elif temp_user=="sleep":
                 self.newday()
@@ -320,4 +364,5 @@ if __name__ == "__main__":
     listofbirds = openlist()
     user = person(str(input("user: ")), listofbirds)
     
+
 
