@@ -48,7 +48,7 @@ class person:
             self.name = "jackson"
 
         # checks if the name is under 2 if so then gives a testing name
-        self.money = 100
+        self.money = 0
         self.inventory = []
         # format = [["name, %to hit the target"]]
         self.shopinv = [["shootie muc gun", 32], ["hunting rifle", 23], ["lucky panda shooter", 45], ["ray gun", 78]]
@@ -247,10 +247,6 @@ class person:
                         pass
                     temp_num2 += 1
                 
-                
-
-
-
 
     def sell(self):
         if len(self.inventory)<=0:
@@ -313,7 +309,6 @@ class person:
             self.sell()
 
 
-
     def menupicker(self):
 
         while True:
@@ -322,47 +317,25 @@ class person:
             self.colldownsleep += 1
             temp_user = temp_user.strip()
 
-            if len(temp_user) <= 2:
-                print("sorry could not find what your looking for")
-
-            elif temp_user=="debug":
-                # this is to test any small code without creating a new function and running it
-                # print(int(numpy.round(temp_worth / 2.5)))
-                print(f"{Fore.RED}not in use{Fore.RESET}")
+            if len(temp_user) <= 2: print("sorry could not find what your looking for")
 
             elif temp_user=="hunt":
                 if self.huntingcooldown >= self.num_ofbirds:
                     print(f"{Fore.RED}you have killed all the bird in the area have to wait till tomorrow")
                     print(f"{Fore.BLUE}// you can sleep to go to the next day{Fore.RESET}")
 
-                elif len(self.inventory) >= 10:
-                    print(f"{Fore.RED}sorry but you cannot hunt you have too many items in your inventory{Fore.RESET}")
+                elif len(self.inventory) >= 10: print(f"{Fore.RED}sorry but you cannot hunt you have too many items in your inventory{Fore.RESET}")
 
                 else:
                     self.hunting()
                     self.huntingcooldown += 1 
-
-            elif temp_user=="inventory" or temp_user=="balance":
-                self.on_hand()
-
-            elif temp_user=="shop":
-                self.shop_sellandbuy()
-
-            elif temp_user=="sleep":
-                self.newday()
-            
-            elif temp_user=="help":
-                print("commands avalable:\nhunt\nshop\nbalance or inventory(same command)\nsleep\nhelp :)")
-            
-            elif temp_user=="help :)":
-                print("did you really just try that")
-
-            else:
-                print(f"{Fore.RED}sorry {self.name}, I could not find ({temp_user.strip()}) anywhere{Fore.RESET}")
+            elif temp_user=="inventory" or temp_user=="balance": self.on_hand()
+            elif temp_user=="shop": self.shop_sellandbuy()
+            elif temp_user=="sleep": self.newday()    
+            elif temp_user=="help": print("commands avalable:\nhunt\nshop\nbalance or inventory(same command)\nsleep\nhelp :)")       
+            elif temp_user=="help :)": print("did you really just try that")
+            else: print(f"{Fore.RED}sorry {self.name}, I could not find ({temp_user.strip()}) anywhere{Fore.RESET}")
 
 if __name__ == "__main__":
     listofbirds = openlist()
     user = person(str(input("user: ")), listofbirds)
-    
-
-
